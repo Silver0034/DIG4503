@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Participation Form</title>
+
+		<script>
+			function readAge(e) {
+				// prevent the form from submitting normally
+				e.preventDefault()
+
+				// get age element
+				const age = document.querySelector('#age').value
+
+				// get reporting object
+				const reporting = document.querySelector('#reporting')
+
+				// if age is empty, stop early and write to reporting
+				if (!age) {
+					reporting.innerHTML = 'Age is required.'
+					return
+				}
+
+				// fetch age from api
+				fetch('/ages/' + age)
+					.then((res) => {
+						// return response string to json
+						return res.json()
+					})
+					.then((processed) => {
+						// set reporting to error if there was an error
+						if (processed.error) {
+							// set error
+							reporting.innerHTML = processed.error
+							// stop running
+							return
+						}
+						// set reporting to name
+						reporting.innerHTML = processed.name
+					})
+			}
+			function readName(e) {
+				// prevent the form from submitting normally
+				e.preventDefault()
+
+				// get name element
+				const name = document.querySelector('#name').value
+
+				// get reporting object
+				const reporting = document.querySelector('#reporting')
+
+				// if name is empty, stop early and write to reporting
+				if (!name) {
+					reporting.innerHTML = 'Name is required.'
+					return
+				}
+
+				// fetch name from api
+				fetch('/employees/' + name)
+					.then((res) => {
+						// return response string to json
+						return res.json()
+					})
+					.then((processed) => {
+						// set reporting to error if there was an error
+						if (processed.error) {
+							// set error
+							reporting.innerHTML = processed.error
+							// stop running
+							return
+						}
+						// set reporting to name
+						reporting.innerHTML = processed.age
+					})
+			}
+			function createEmployee(e) {
+				// prevent the form from submitting normally
+				e.preventDefault()
+
+				// get name element
+				const name = document.querySelector('#insertName')
+				// get age
+				const age = document.querySelector('#insertAge')
+
+				// get reporting object
+				const reporting = document.querySelector('#reporting')
+
+				// fetch age from api
+				fetch('/employees/' + name.value + '/' + age.value, {
+					method: 'post'
+				})
+					.then((res) => {
+						console.log(res)
+						// return response string to json
+						return res.json()
+					})
+					.then((processed) => {
+						// set reporting to name
+						reporting.innerHTML =
+							processed.name + ' has been added to the database'
+					})
+			}
+		</script>
+	</head>
+	<body>
+		<!-- age form -->
+		<form onsubmit="readAge(event)">
+			<!-- name input and label-->
+			<label for="age"><h2>Age</h2></label>
+			<input id="age" type="text" />
+			<!-- submit button -->
+			<input type="submit" value="Submit Age" />
+		</form>
+
+		<!-- name form -->
+		<form onsubmit="readName(event)">
+			<!-- name input and label-->
+			<label for="name"><h2>Name</h2></label>
+			<input id="name" type="text" />
+			<!-- submit button -->
+			<input type="submit" value="Submit Name" />
+		</form>
+
+		<hr />
+
+		<form onsubmit="createEmployee(event)">
+			<!-- name input and label-->
+			<label for="insertName"><h2>Name</h2></label>
+			<input id="insertName" type="text" />
+			<!-- age input and label -->
+			<label for="insertAge"><h2>Age</h2></label>
+			<input id="insertAge" type="text" />
+			<!-- submit button -->
+			<input type="submit" value="Add New Employee" />
+		</form>
+
+		<hr />
+
+		<!-- reporting section -->
+		<h2>Reporting</h2>
+		<div id="reporting"></div>
+	</body>
+</html>
