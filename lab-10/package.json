@@ -1,0 +1,23 @@
+{
+	"name": "lab-10",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"build": "cd client && npm run build",
+		"server": "nodemon index.js",
+		"start": "concurrently 'npm:build' 'npm:server'"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"concurrently": "^6.0.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.7"
+	}
+}
